@@ -6,6 +6,16 @@
 
 using namespace std;
 
+#define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
+inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
+{
+   if (code != cudaSuccess) 
+   {
+      fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+      if (abort) exit(code);
+   }
+}
+
 void vecAdd1(float *h_A, float* h_B, float* h_C, int n) {
         for (int i = 0; i < n; i++) {
                 h_C[i] = h_A[i] + h_B[i];
@@ -51,12 +61,12 @@ int main() {
                 h_C[i] = 0.0;
         }
 
-	      vecAdd2(h_A, h_B, h_C, n);
+	vecAdd2(h_A, h_B, h_C, n);
 
         for(int i = 0; i<n; i++){
-                printf("%f ", h_C[i]);
+        	printf("%f ", h_C[i]);
         }
-	      printf("\n")
+	printf("\n");
 
         free(h_A);
         free(h_B);
