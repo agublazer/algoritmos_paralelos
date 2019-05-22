@@ -7,6 +7,7 @@
 using namespace std;
 // check for errors using cuda runtime api
 // https://stackoverflow.com/questions/14038589/what-is-the-canonical-way-to-check-for-errors-using-the-cuda-runtime-api
+// Error: GPUassert: unknown error vecadd.cu 45
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
@@ -44,7 +45,8 @@ void vecAdd2(float* A, float* B, float* C, int n) {
 
         vecAddKernel <<< ceil(n/256.0), 256 >>> (d_A, d_B, d_C, n);
         
-        cudaMemcpy(C, d_C, size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(C, d_C, size, cudaMemcpyDeviceToHost);
+        // gpuErrchk(cudaMemcpy(C, d_C, size, cudaMemcpyDeviceToHost));
 
         cudaFree(d_A);
         cudaFree(d_B);
