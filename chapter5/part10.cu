@@ -17,7 +17,7 @@ void figure517kernel(float* A, float* B, float* C, int Width) {
 		if (((ph*TILE_WIDTH + ty) < Width) && (Col < Width))
 			Nds[ty][tx] = B[(ph*TILE_WIDTH + ty)*Width + Col];
 		
-    __syncthreads(); //Nos aseguramos que todos los threads cargan los datos antes de continuar
+    		__syncthreads(); //Nos aseguramos que todos los threads cargan los datos antes de continuar
 
 		for (int k = 0; k < TILE_WIDTH; ++k) {
 			Pvalue += Mds[ty][k] * Nds[k][tx];
